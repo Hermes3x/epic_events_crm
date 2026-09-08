@@ -1,0 +1,9 @@
+# Dependances d'execution de l'application Epic Events CRM
+SQLAlchemy==2.0.52
+psycopg[binary]==3.3.5
+argon2-cffi==25.1.0
+PyJWT==2.13.0
+click==8.5.0
+rich==15.0.0
+python-dotenv==1.2.3
+sentry-sdk==2.68.1

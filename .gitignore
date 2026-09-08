@@ -1,0 +1,26 @@
+# --- SECRETS : ne doivent JAMAIS partir sur GitHub ---
+.env
+*.env
+!.env.example
+
+# --- Environnement virtuel ---
+.venv/
+venv/
+env/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# --- Couverture de tests ---
+.coverage
+htmlcov/
+coverage.xml
+
+# --- Editeurs / OS ---
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
