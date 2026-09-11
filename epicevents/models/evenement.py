@@ -18,6 +18,7 @@ class Evenement(Base):
     localisation: Mapped[str] = mapped_column(String(100))
     nb_invites: Mapped[int] = mapped_column()
     notes: Mapped[str] = mapped_column(Text)
+
     contrat_id: Mapped[int] = mapped_column(ForeignKey("contrat.id"))
     support_id: Mapped[int | None] = mapped_column(ForeignKey("collaborateur.id"))
 

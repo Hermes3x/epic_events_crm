@@ -21,10 +21,7 @@ class Contrat(Base):
     statut: Mapped[bool] = mapped_column(Boolean, default=False)
 
     client_id: Mapped[int] = mapped_column(ForeignKey("client.id"))
-    commercial_id: Mapped[int] = mapped_column(ForeignKey("collaborateur.id"))
-
     client: Mapped["Client"] = relationship(back_populates="contrats")
-    commercial: Mapped["Collaborateur"] = relationship(back_populates="contrats")
     evenements: Mapped[list["Evenement"]] = relationship(back_populates="contrat")
 
 

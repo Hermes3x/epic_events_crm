@@ -8,7 +8,6 @@ erDiagram
     role ||--o{ collaborateur : "role_id"
     collaborateur ||--o{ client : "commercial_id"
     client ||--o{ contrat : "client_id"
-    collaborateur ||--o{ contrat : "commercial_id"
     contrat ||--o{ evenement : "contrat_id"
     collaborateur |o--o{ evenement : "support_id"
 
@@ -44,7 +43,6 @@ erDiagram
         datetime date_creation
         boolean statut
         int client_id FK
-        int commercial_id FK
     }
 
     evenement {

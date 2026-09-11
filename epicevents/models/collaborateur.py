@@ -21,7 +21,6 @@ class Collaborateur(Base):
     role: Mapped["Role"] = relationship(back_populates="collaborateurs")
 
     clients: Mapped[list["Client"]] = relationship(back_populates="commercial")
-    contrats: Mapped[list["Contrat"]] = relationship(back_populates="commercial")
     evenements: Mapped[list["Evenement"]] = relationship(back_populates="support")
 
 
