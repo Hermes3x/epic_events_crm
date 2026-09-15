@@ -32,3 +32,8 @@ PERMISSIONS = {
         "modifier_evenement"
     },
 }
+
+
+def a_la_permission(collaborateur, action: str) -> bool:
+    """Indique si le rôle du collaborateur autorise cette action."""
+    return action in PERMISSIONS[collaborateur.role.nom]
