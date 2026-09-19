@@ -65,3 +65,11 @@ def utilisateur_courant(session) -> Collaborateur | None:
     if contenu is None:
         return None
     return session.get(Collaborateur, int(contenu["sub"]))
+
+
+def exiger_connexion(session) -> Collaborateur:
+    """Retourne le collaborateur connecté, ou lève PermissionError."""
+    collaborateur = utilisateur_courant(session)
+    if collaborateur is None:
+        raise PermissionError("Vous devez être connecté.")
+    return collaborateur
