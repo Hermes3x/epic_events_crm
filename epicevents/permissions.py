@@ -37,3 +37,10 @@ PERMISSIONS = {
 def a_la_permission(collaborateur, action: str) -> bool:
     """Indique si le rôle du collaborateur autorise cette action."""
     return action in PERMISSIONS[collaborateur.role.nom]
+
+
+def exiger_permission(collaborateur, action: str) -> None:
+    """Autorise le collaborateur a réaliser une action si il en a la permission"""
+    permission = a_la_permission(collaborateur, action)
+    if not permission:
+        raise PermissionError("Vous n'êtes pas autorisé à réaliser cette action.")
