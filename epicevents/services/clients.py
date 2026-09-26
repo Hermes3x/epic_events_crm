@@ -20,7 +20,7 @@ def modifier_client(session, collaborateur, client, **champs):
     exiger_permission(collaborateur, "modifier_client")
 
     if client.commercial_id != collaborateur.id:
-        raise PermissionError("Ce client n'est pas le vôtre.")
+        raise PermissionError("Vous ne pouvez pas modifier : ce client n'est pas le vôtre.")
 
     for nom, valeur in champs.items():
         setattr(client, nom, valeur)

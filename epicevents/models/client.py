@@ -22,7 +22,7 @@ class Client(Base):
     date_derniere_maj: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
 
     commercial_id: Mapped[int] = mapped_column(ForeignKey("collaborateur.id"))
-    
+
     commercial: Mapped["Collaborateur"] = relationship(back_populates="clients")
     contrats: Mapped[list["Contrat"]] = relationship(back_populates="client")
 
