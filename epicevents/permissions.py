@@ -21,6 +21,7 @@ PERMISSIONS = {
         "creer_contrat",
         "modifier_contrat",
         "assigner_support",
+        "modifier_evenement",
     },
     "commercial": {
         "creer_client",

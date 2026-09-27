@@ -24,8 +24,9 @@ def modifier_evenement(session, collaborateur, evenement, **champs):
     """Modifie un evenement, si le collaborateur en est responsable (support)."""
     exiger_permission(collaborateur, "modifier_evenement")
 
-    if evenement.support_id != collaborateur.id:
-        raise PermissionError("Vous n'êtes pas affecté à la gestion de cet évènement")
+    if collaborateur.role.nom == "support":
+        if evenement.support_id != collaborateur.id:
+            raise PermissionError("Vous n'êtes pas affecté à la gestion de cet évènement")
 
     for nom, valeur in champs.items():
         setattr(evenement, nom, valeur)

@@ -4,7 +4,13 @@ Usage :
     python epicevents.py --help
 """
 
+import sys
+
 from epicevents.cli.principal import cli
 
 if __name__ == "__main__":
-    cli()
+    try:
+        cli()
+    except (PermissionError, ValueError) as e:
+        print(f"Erreur : {e}")
+        sys.exit(1)

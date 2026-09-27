@@ -16,6 +16,11 @@ from epicevents.database import Session
 def auth() -> None:
     """Connexion et déconnexion."""
 
+@auth.command()
+def statut() -> None:
+    """Affiche le collaborateur actuellement connecté."""
+    with Session() as session:
+        collaborateur = session
 
 @auth.command()
 def logout() -> None:

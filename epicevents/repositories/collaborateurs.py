@@ -7,4 +7,4 @@ from epicevents.models import Collaborateur
 
 def lister_collaborateurs(session) -> list[Collaborateur]:
     """Retourne tous les collaborateurs."""
-    return session.scalars(select(Collaborateur)).all()
+    return session.scalars(select(Collaborateur).order_by(Collaborateur.id)).all()
