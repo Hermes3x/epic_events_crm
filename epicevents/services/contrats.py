@@ -2,6 +2,7 @@
 
 from epicevents.permissions import exiger_permission
 from epicevents.models import Contrat
+from epicevents.journalisation import journaliser_signature_contrat
 
 
 def creer_contrat(session, collaborateur, client, **champs):
@@ -22,7 +23,10 @@ def modifier_contrat(session, collaborateur, contrat, **champs):
         if contrat.client.commercial_id != collaborateur.id:
             raise PermissionError("Vous n'êtes pas affecté à la gestion de ce contrat")
 
+    etat = contrat.statut
     for nom, valeur in champs.items():
         setattr(contrat, nom, valeur)
     session.commit()
+    if contrat.statut != etat:
+        journaliser_signature_contrat(contrat, collaborateur)
     return contrat
