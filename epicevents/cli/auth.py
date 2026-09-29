@@ -7,6 +7,7 @@ from epicevents.auth import (
     authentifier,
     creer_jeton,
     sauvegarder_jeton,
+    utilisateur_courant,
 )
 from epicevents.database import Session
 
@@ -20,7 +21,15 @@ def auth() -> None:
 def statut() -> None:
     """Affiche le collaborateur actuellement connecté."""
     with Session() as session:
-        collaborateur = session
+        collaborateur = utilisateur_courant(session)
+        if collaborateur is None:
+            click.echo("Personne n'est connecté.")
+            return
+        click.echo(
+            f"Connecté : {collaborateur.nom_complet} "
+            f"({collaborateur.email}) — rôle : {collaborateur.role.nom}"
+        )
+
 
 @auth.command()
 def logout() -> None:
