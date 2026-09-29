@@ -41,7 +41,22 @@ def a_la_permission(collaborateur, action: str) -> bool:
 
 
 def exiger_permission(collaborateur, action: str) -> None:
-    """Autorise le collaborateur a réaliser une action si il en a la permission"""
-    permission = a_la_permission(collaborateur, action)
-    if not permission:
-        raise PermissionError("Vous n'êtes pas autorisé à réaliser cette action.")
+    """Laisse passer si le rôle autorise l'action, lève PermissionError sinon.
+
+    Le message indique quels rôles détiennent l'action. Cette information est
+    structurelle — les trois départements sont connus de tous les employés —
+    et ne divulgue aucune donnée métier : cette fonction ne voit jamais de
+    client, de contrat ni d'évènement.
+    """
+    if a_la_permission(collaborateur, action):
+        return
+
+    roles_autorises = [role for role, actions in PERMISSIONS.items() if action in actions]
+
+    if not roles_autorises:
+        raise PermissionError(f"L'action « {action} » n'existe pas.")
+
+    raise PermissionError(
+        f"L'action « {action} » n'est pas autorisée pour le rôle "
+        f"« {collaborateur.role.nom} ». Rôles autorisés : {', '.join(roles_autorises)}."
+    )
