@@ -1,5 +1,7 @@
 """Tests de l'authentification et des jetons (epicevents/auth.py)."""
 
+import base64
+import json
 import os
 from datetime import datetime, timedelta, timezone
 
@@ -55,14 +57,38 @@ def test_le_jeton_porte_l_identite_et_le_role(session, equipe):
 
 
 def test_un_jeton_falsifie_est_refuse(session, equipe):
+    """Un attaquant reecrit le contenu pour se donner le role gestion.
+
+    Il peut LIRE le jeton (il est signe, pas chiffre) et le reecrire, mais
+    il ne peut pas recalculer la signature sans JWT_SECRET.
+    """
     jeton = creer_jeton(equipe["commercial"])
-    falsifie = jeton[:-1] + ("A" if jeton[-1] != "A" else "B")
+    entete, _, signature = jeton.split(".")
+
+    contenu_falsifie = (
+        base64.urlsafe_b64encode(
+            json.dumps({"sub": "1", "role": "gestion", "exp": 9999999999}).encode()
+        )
+        .decode()
+        .rstrip("=")
+    )
+    falsifie = f"{entete}.{contenu_falsifie}.{signature}"
+
+    # Le contenu falsifie est bien lisible...
+    assert jwt.decode(falsifie, options={"verify_signature": False})["role"] == "gestion"
+    # ... mais la signature ne correspond plus.
     assert lire_jeton(falsifie) is None
 
 
 def test_un_jeton_signe_avec_une_autre_cle_est_refuse():
-    """Sans JWT_SECRET, impossible de fabriquer un jeton valide."""
-    pirate = jwt.encode({"sub": "1", "role": "gestion"}, "cle-du-pirate", algorithm="HS256")
+    """Sans JWT_SECRET, impossible de fabriquer un jeton valide.
+
+    La cle de l'attaquant est aussi forte que la notre (32 octets) : c'est
+    bien le fait qu'elle soit DIFFERENTE qui fait echouer la falsification,
+    pas sa faiblesse.
+    """
+    cle_de_l_attaquant = "f" * 64
+    pirate = jwt.encode({"sub": "1", "role": "gestion"}, cle_de_l_attaquant, algorithm="HS256")
     assert lire_jeton(pirate) is None
 
 
