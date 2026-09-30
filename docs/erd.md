@@ -1,7 +1,23 @@
 # Schéma de la base de données
 
-Diagramme généré automatiquement à partir des modèles SQLAlchemy
-(`python generate_erd.py`). Il reflète donc exactement la base implémentée.
+Diagrammes générés automatiquement à partir des modèles SQLAlchemy
+(`python generate_erd.py`). Ils reflètent donc exactement la base implémentée.
+
+## Vue d'ensemble — cardinalités
+
+```mermaid
+classDiagram
+    Role "1" --> "*" Collaborateur : role_id
+    Collaborateur "1" --> "*" Client : commercial_id
+    Client "1" --> "*" Contrat : client_id
+    Contrat "1" --> "*" Evenement : contrat_id
+    Collaborateur "0..1" --> "*" Evenement : support_id
+```
+
+## Schéma détaillé — tables, colonnes et contraintes
+
+Notation entité-association : `||` exactement un · `|o` zéro ou un · `o{` plusieurs.
+`PK` clé primaire · `FK` clé étrangère · `UK` contrainte d'unicité.
 
 ```mermaid
 erDiagram

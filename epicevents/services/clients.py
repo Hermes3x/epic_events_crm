@@ -2,11 +2,15 @@
 
 from epicevents.permissions import exiger_permission
 from epicevents.models import Client
+from epicevents.validation import valider_email
 
 
 def creer_client(session, collaborateur, **champs):
     """Crée un client et l'associe automatiquement au commercial qui le crée."""
     exiger_permission(collaborateur, "creer_client")
+
+    if "email" in champs:
+        champs["email"] = valider_email(champs["email"])
 
     client = Client(**champs, commercial=collaborateur)
     session.add(client)
@@ -21,6 +25,9 @@ def modifier_client(session, collaborateur, client, **champs):
 
     if client.commercial_id != collaborateur.id:
         raise PermissionError("Vous ne pouvez pas modifier : ce client n'est pas le vôtre.")
+
+    if "email" in champs:
+        champs["email"] = valider_email(champs["email"])
 
     for nom, valeur in champs.items():
         setattr(client, nom, valeur)
